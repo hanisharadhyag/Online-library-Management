@@ -33,7 +33,7 @@ export default function Dashboard() {
       setLoading(true);
 
       // Trigger automatic overdue check on load (best effort)
-      try { await supabase.rpc("refresh_overdue_borrowings"); } catch (_) {}
+      try { await supabase.rpc("refresh_overdue_borrowings"); } catch (_) { }
 
       // Fetch user's borrowings with book details
       const { data: borrowings, error } = await supabase
@@ -329,11 +329,10 @@ export default function Dashboard() {
         title="Return Book"
         message={
           returnDialog.item
-            ? `Are you sure you want to return "${returnDialog.item.books?.title}"? ${
-                new Date(returnDialog.item.due_date) < new Date()
-                  ? "Note: This book is overdue and a late fine of ₹5/day will be calculated."
-                  : "Returning on time incurs zero fine."
-              }`
+            ? `Are you sure you want to return "${returnDialog.item.books?.title}"? ${new Date(returnDialog.item.due_date) < new Date()
+              ? "Note: This book is overdue and a late fine of ₹5/day will be calculated."
+              : "Returning on time incurs zero fine."
+            }`
             : ""
         }
         confirmText="Confirm Return"
